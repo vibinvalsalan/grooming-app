@@ -1,0 +1,99 @@
+    <form [formGroup]="reportFormGroup" #reportForm="ngForm" (ngSubmit)="getReport(reportForm)">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <strong>Report Date</strong>
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              <mat-chip-list>
+                <mat-chip *ngIf="reportFormGroup.value.frmDtCntrl">
+                  <mat-icon>map</mat-icon>{{reportFormGroup.value.frmDtCntrl | date}}
+                </mat-chip>
+                <mat-chip *ngIf="reportFormGroup.value.toDtCntrl">
+                  <mat-icon>map</mat-icon>{{reportFormGroup.value.toDtCntrl |date}}
+                </mat-chip>
+              </mat-chip-list>
+              <mat-icon>date_range</mat-icon>
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+          <div class="row">
+            <div class="col-md-6 col-lg-3 col-sm-12">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="{{frmdate}}" [matDatepicker]="frmDt"
+                  formControlName="frmDtCntrl" readonly />
+                <mat-error *ngIf="reportFormGroup.controls.frmDtCntrl.hasError('required')">
+                  Departure Date is required.
+                </mat-error>
+                <mat-datepicker-toggle matSuffix [for]="frmDt"></mat-datepicker-toggle>
+                <mat-datepicker #frmDt></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6 col-lg-3 col-sm-12">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="{{todate}}"  [matDatepicker]="toDt"
+                  formControlName="toDtCntrl" readonly />
+                <mat-error *ngIf="reportFormGroup.controls.toDtCntrl.hasError('required')">
+                  Return Date is required.
+                </mat-error>
+                <mat-datepicker-toggle matSuffix [for]="toDt"></mat-datepicker-toggle>
+                <mat-datepicker #toDt></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-action-row>
+            <button mat-button color="warn" type="submit">Search</button>
+            <button mat-button color="primary" type="button" (click)="Export()">Export</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+    <mat-progress-bar mode="indeterminate" color="warn" *ngIf="showProgress"></mat-progress-bar>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+    
+        <!-- Position Column -->
+        <ng-container matColumnDef="CourierId">
+          <th mat-header-cell *matHeaderCellDef> Courier ID</th>
+          <td mat-cell *matCellDef="let element"> {{element.CourierId}} </td>
+        </ng-container>
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="CourierName">
+          <th mat-header-cell *matHeaderCellDef>Courier Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.CourierName}} </td>
+        </ng-container>
+    
+        <!-- Weight Column -->
+        <ng-container matColumnDef="QuestionName">
+          <th mat-header-cell *matHeaderCellDef> Question </th>
+          <td mat-cell *matCellDef="let element"> {{element.QuestionName}} </td>
+        </ng-container>
+    
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="SelectedAnswer">
+          <th mat-header-cell *matHeaderCellDef> Answer </th>
+          <td mat-cell *matCellDef="let element"> {{element.SelectedAnswer}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="CreatedBy">
+          <th mat-header-cell *matHeaderCellDef> Created By </th>
+          <td mat-cell *matCellDef="let element"> {{element.CreatedBy}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="CreatedDate">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.CreatedDate | date: 'short'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Entity">
+          <th mat-header-cell *matHeaderCellDef>Entity </th>
+          <td mat-cell *matCellDef="let element"> {{element.Entity}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    
+      <mat-paginator [pageSizeOptions]="[5, 10, 20,100]" showFirstLastButtons></mat-paginator>
+    </div>
